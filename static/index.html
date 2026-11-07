@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Now Playing</title>
+<style>
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.player {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+  max-width: 850px;
+}
+.cover {
+  width: min(38vw, 260px);
+  aspect-ratio: 1;
+  object-fit: cover;
+  background: #171717;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+.title {
+  font-size: clamp(22px, 4vw, 42px);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  .player { gap: 14px; }
+  .cover { width: 35vw; }
+}
+</style>
+</head>
+<body>
+  <main class="player">
+    <img class="cover" id="cover" alt="">
+    <div class="title" id="title">Ожидание трека…</div>
+  </main>
+
+<script>
+async function updateTrack() {
+  try {
+    const response = await fetch('/api/now-playing', {
+      cache: 'no-store'
+    });
+    if (!response.ok) return;
+
+    const track = await response.json();
+
+    if (track.title) {
+      document.getElementById('title').textContent = track.title;
+    }
+    if (track.cover) {
+      document.getElementById('cover').src = track.cover;
+    }
+  } catch (error) {
+    console.log('Ожидаем данные плеера');
+  }
+}
+
+updateTrack();
+setInterval(updateTrack, 3000);
+</script>
+</body>
+</html>
