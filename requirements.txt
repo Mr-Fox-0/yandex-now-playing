@@ -1,1 +1,4 @@
-Flask>=3.0,<4\ngunicorn>=22,<24\nyandex-music[ynison]>=3.2.2\n
+Flask
+gunicorn
+yandex-music[ynison]
+flask-cors
