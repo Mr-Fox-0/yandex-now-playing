@@ -113,15 +113,22 @@
                 document.getElementById('auth-info').style.display = 'none';
                 document.getElementById('login-btn').style.display = 'none';
                 
-if (statusInterval) clearInterval(statusInterval);
-setInterval(checkStatus, 5000);
-｝
-// Обновление трека
-if (data.track) {
-document.getElementById( 'title').innerText
-= data.track.title || 'Неизвестный трек';
-document.getElementById('artist').innerText
-= data.track.artist || '';
+    // Обновление трека
+    if (data.track) {
+        document.getElementById('title').innerText = data.track.title || 'Неизвестный трек';
+        document.getElementById('artist').innerText = data.track.artist || '';
+        
+        if (data.track.cover) {
+            document.getElementById('cover').style.backgroundImage = `url('${data.track.cover}')`;
+        } else {
+            document.getElementById('cover').style.backgroundImage = 'none';
+        }
+    } else if (data.connected) {
+        document.getElementById('title').innerText = 'Ничего не играет';
+        document.getElementById('artist').innerText = '';
+        document.getElementById('cover').style.backgroundImage = 'none';
+    }
+
 if (data.track.cover) {
 document.getElementById( 'cover').style.back
 ground Image = 'url('${data.track.cover}')';
