@@ -61,7 +61,7 @@
     <h1 id="title">Ожидание трека...</h1>
     <h2 id="artist"></h2>
 
-    <button id="login-btn" onclick="startAuth()">Подключить Яндекс</button>
+    <button id="login-btn">Подключить Яндекс</button>
 
     <div class="auth-info" id="auth-info">
         <p>Перейдите по ссылке и введите код:</p>
@@ -148,6 +148,8 @@ e) ;
 // Проверяем статус при загрузке
 страницы
 checkStatus ();
+    // Явно привязываем кнопку к функции
+document.getElementById('login-btn').addEventListener('click', startAuth);
 </script>
 </ body> </htm1>
               
