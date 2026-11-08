@@ -113,12 +113,8 @@
                 document.getElementById('auth-info').style.display = 'none';
                 document.getElementById('login-btn').style.display = 'none';
                 
-                if (statusInterval) clearInterval (statusInterval); //
-Останавливаем частые проверки
-// Продолжаем проверять
-трек, но уже реже (каждые 5 сек)
-setInterval(checkStatus,
-5000) ;
+if (statusInterval) clearInterval(statusInterval);
+setInterval(checkStatus, 5000);
 ｝
 // Обновление трека
 if (data.track) {
