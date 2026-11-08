@@ -123,33 +123,26 @@
         } else {
             document.getElementById('cover').style.backgroundImage = 'none';
         }
-   if (data.track.cover) {
-document.getElementById('cover').style.backgroundImage = url('${data.track.cover}');
-} else {
-document.getElementById('cover').style.backgroundImage = 'none';
-}
-} else if (data.connected) {
-document.getElementById('title').innerText = 'Ничего не играет';
-document.getElementById('artist').innerText = '';
-document.getElementById('cover').style.backgroundImage = 'none';
-}
-} else if (data.connected) {
-document.getElementById('title').innerText
-= 'Ничего не играет';
-  document.getElementById('artist').innerText
-document.getElementById( 'cover').style.back
-groundImage = 'none';
-}
-} catch (e) {
-console.error ("Ошибка сети"
-e) ;
-}
-}
-// Проверяем статус при загрузке
-страницы
-checkStatus ();
-    // Явно привязываем кнопку к функции
-document.getElementById('login-btn').addEventListener('click', startAuth);
+ if (data.track.cover) {
+                document.getElementById('cover').style.backgroundImage = `url('${data.track.cover}')`;
+            } else {
+                document.getElementById('cover').style.backgroundImage = 'none';
+            }
+        } else if (data.connected) {
+            document.getElementById('title').innerText = 'Ничего не играет';
+            document.getElementById('artist').innerText = '';
+            document.getElementById('cover').style.backgroundImage = 'none';
+        }
+        } catch (e) {
+            console.error("Ошибка сети", e);
+        }
+    }
+
+    // Привязываем кнопку
+    document.getElementById('login-btn').addEventListener('click', startAuth);
+
+    // Проверяем статус при загрузке
+    window.onload = checkStatus;
 </script>
-</ body> </htm1>
-              
+</body>
+</html>
