@@ -2,9 +2,11 @@ import os
 import threading
 import time
 from flask import Flask, jsonify, request, send_from_directory
+from flask_cors import CORS
 from yandex_music import Client
 from yandex_music.ynison import YnisonClient
 
+CORS(app, resources={r"/*": {"origins": "https://mr-fox-0.github.io"}})
 app = Flask(__name__, static_folder="static")
 lock = threading.RLock()
 
