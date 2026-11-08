@@ -123,18 +123,15 @@
         } else {
             document.getElementById('cover').style.backgroundImage = 'none';
         }
-    } else if (data.connected) {
-        document.getElementById('title').innerText = 'Ничего не играет';
-        document.getElementById('artist').innerText = '';
-        document.getElementById('cover').style.backgroundImage = 'none';
-    }
-
-if (data.track.cover) {
-document.getElementById( 'cover').style.back
-ground Image = 'url('${data.track.cover}')';
+   if (data.track.cover) {
+document.getElementById('cover').style.backgroundImage = url('${data.track.cover}');
 } else {
-document.getElementById( 'cover').style.back
-groundImage = 'none';
+document.getElementById('cover').style.backgroundImage = 'none';
+}
+} else if (data.connected) {
+document.getElementById('title').innerText = 'Ничего не играет';
+document.getElementById('artist').innerText = '';
+document.getElementById('cover').style.backgroundImage = 'none';
 }
 } else if (data.connected) {
 document.getElementById('title').innerText
