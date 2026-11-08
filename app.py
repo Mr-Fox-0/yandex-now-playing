@@ -6,7 +6,7 @@ from flask_cors import CORS
 from yandex_music import Client
 from yandex_music.ynison import YnisonClient
 app = Flask(__name__, static_folder="static")
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=False)
 lock = threading.RLock()
 
 state = {
