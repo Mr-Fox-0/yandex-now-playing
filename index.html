@@ -5,48 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yandex Now Playing</title>
     <style>
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            text-align: center;
-            background: #1e1e1e;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            max-width: 400px;
-            width: 100%;
-        }
-        .cover {
-            width: 200px;
-            height: 200px;
-            background-color: #333;
-            border-radius: 10px;
-            margin: 0 auto 20px auto;
-            background-size: cover;
-            background-position: center;
-        }
+        body { background-color: #121212; color: white; font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { text-align: center; background: #1e1e1e; padding: 40px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); max-width: 400px; width: 100%; }
+        .cover { width: 200px; height: 200px; background-color: #333; border-radius: 10px; margin: 0 auto 20px auto; background-size: cover; background-position: center; }
         h1 { margin: 10px 0; font-size: 24px; }
         h2 { margin: 5px 0; font-size: 18px; color: #b3b3b3; font-weight: normal; }
-        button {
-            background-color: #ffdb4d;
-            color: black;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: 0.2s;
-        }
+        button { background-color: #ffdb4d; color: black; border: none; padding: 15px 30px; font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; margin-top: 20px; transition: 0.2s; }
         button:hover { background-color: #ffd633; }
         button:disabled { background-color: #555; color: #888; cursor: not-allowed; }
         .auth-info { display: none; margin-top: 20px; }
@@ -67,85 +31,65 @@
         <p>Перейдите по ссылке и введите код:</p>
         <a id="verification-url" href="#" target="_blank">Открыть страницу Яндекс</a>
         <div class="user-code" id="user-code"></div>
-        <p style="color: #888; font-size: 14px;">После ввода кода подождите, сайт обновится автоматически.</p>
     </div>
 </div>
 
 <script>
-    // ВАША ССЫЛКА НА СЕРВЕР RENDER
     const SERVER_URL = 'https://yandex-now-playing.onrender.com';
-
     let statusInterval;
+    const btn = document.getElementById('login-btn');
 
-    // Функция запуска авторизации
     async function startAuth() {
-        const btn = document.getElementById('login-btn');
         btn.innerText = 'Загрузка...';
         btn.disabled = true;
-
         try {
             await fetch(`${SERVER_URL}/api/auth/start`, { method: 'POST' });
-            // После запуска начинаем проверять статус
-            checkStatus();
-            statusInterval = setInterval(checkStatus, 3000); // Проверка каждые 3 секунды
+            statusInterval = setInterval(checkStatus, 3000);
         } catch (e) {
-            btn.innerText = 'Ошибка. Попробуйте снова';
+            btn.innerText = 'Ошибка. Проверьте интернет.';
             btn.disabled = false;
         }
     }
 
-    // Функция проверки статуса
     async function checkStatus() {
         try {
             const res = await fetch(`${SERVER_URL}/api/status`);
             const data = await res.json();
 
-            // Обработка авторизации
             if (data.auth_status === 'waiting_for_code') {
-                document.getElementById('login-btn').style.display = 'none';
                 document.getElementById('auth-info').style.display = 'block';
                 document.getElementById('verification-url').href = data.verification_url;
                 document.getElementById('user-code').innerText = data.user_code;
             }
 
-            // Обработка успешного входа
             if (data.connected === true) {
                 document.getElementById('auth-info').style.display = 'none';
-                document.getElementById('login-btn').style.display = 'none';
-                
-    // Обновление трека
-    if (data.track) {
-        document.getElementById('title').innerText = data.track.title || 'Неизвестный трек';
-        document.getElementById('artist').innerText = data.track.artist || '';
-        
-        if (data.track.cover) {
-            document.getElementById('cover').style.backgroundImage = `url('${data.track.cover}')`;
-        } else {
-            document.getElementById('cover').style.backgroundImage = 'none';
-        }
-        } else if (data.connected) {
-            document.getElementById('title').innerText = 'Ничего не играет';
-            document.getElementById('artist').innerText = '';
-            document.getElementById('cover').style.backgroundImage = 'none';
-        }
-        } catch (e) {
-            console.error("Ошибка сети", e);
-        }
-   } else if (data.connected) {
-            document.getElementById('title').innerText = 'Ничего не играет';
-            document.getElementById('artist').innerText = '';
-            document.getElementById('cover').style.backgroundImage = 'none';
-        }
-        } catch (e) {
-            console.error("Ошибка сети", e);
+                btn.style.display = 'none';
+                if (statusInterval) clearInterval(statusInterval);
+                setInterval(checkStatus, 5000);
+            }
+
+            if (data.track) {
+                document.getElementById('title').innerText = data.track.title || 'Неизвестный трек';
+                document.getElementById('artist').innerText = data.track.artist || '';
+                if (data.track.cover) {
+                    document.getElementById('cover').style.backgroundImage = `url('${data.track.cover}')`;
+                } else {
+                    document.getElementById('cover').style.backgroundImage = 'none';
+                }
+            } else if (data.connected) {
+                document.getElementById('title').innerText = 'Ничего не играет';
+                document.getElementById('artist').innerText = '';
+                document.getElementById('cover').style.backgroundImage = 'none';
+            }
+        } catch (e) { 
+            console.error("Ошибка сети", e); 
         }
     }
 
-    // Привязываем кнопку
-    document.getElementById('login-btn').addEventListener('click', startAuth);
-
-    // Проверяем статус при загрузке
+    btn.addEventListener('click', startAuth);
     window.onload = checkStatus;
 </script>
+
 </body>
 </html>
