@@ -123,11 +123,6 @@
         } else {
             document.getElementById('cover').style.backgroundImage = 'none';
         }
- if (data.track.cover) {
-                document.getElementById('cover').style.backgroundImage = `url('${data.track.cover}')`;
-            } else {
-                document.getElementById('cover').style.backgroundImage = 'none';
-            }
         } else if (data.connected) {
             document.getElementById('title').innerText = 'Ничего не играет';
             document.getElementById('artist').innerText = '';
@@ -140,7 +135,6 @@
 
     // Привязываем кнопку
     document.getElementById('login-btn').addEventListener('click', startAuth);
-
     // Проверяем статус при загрузке
     window.onload = checkStatus;
 </script>
